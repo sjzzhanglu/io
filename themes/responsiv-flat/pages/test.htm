@@ -1,0 +1,39 @@
+title="test"
+url="/test/post/:id?"
+layout="default"
+==
+use Cms\Models\Post;
+
+function onStart()
+{
+    View::share('zhang','张');
+    $this['post_id'] = $this->param('id');
+    $this['posts'] = Post::get();
+}
+
+function onHandleForm()
+{
+    $this['tests'] = post('test');
+}
+
+function onEnd()
+{
+    $this->page->title = 'onEnd test';
+}
+==
+<h3>
+    {% content "welcome.htm" name="你好" %}
+    {{ this.page.title }}
+    测试页面<br>{{ post_id }}
+    测试form<br>{{ tests }}
+    {% for post in posts %}
+    {{ post.title }}--{{ post.content }}<br>
+    {% endfor %}
+
+    {{ form_open({ request: 'onHandleForm' }) }}
+    <input type="text" name="test" value="">
+    <input type="submit" name="" value="submit">
+    {{ form_close() }}
+    lastValue: {{ lastValue }}
+
+</h3>
